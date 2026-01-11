@@ -4,6 +4,7 @@ Serves the visual web app and optionally controls smart bulb
 """
 
 import json
+import os
 from pathlib import Path
 from flask import Flask, request, jsonify, render_template
 from bulb_controller import BulbController
@@ -13,7 +14,8 @@ CONFIG_PATH = Path("config.json")
 with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
 
-PORT = config.get("server_port", 5555)
+# Use PORT from environment (Railway sets this) or fallback to config
+PORT = int(os.environ.get("PORT", config.get("server_port", 5555)))
 app = Flask(__name__, template_folder='templates', static_folder='static')
 bulb = BulbController()
 
@@ -367,7 +369,7 @@ def main():
     print(f"║  Open: http://localhost:{PORT}                             ║")
     print(f"╚═══════════════════════════════════════════════════════════╝\n")
     
-    app.run(host="0.0.0.0", port=PORT, debug=True)
+    app.run(host="0.0.0.0", port=PORT, debug=False)
 
 if __name__ == "__main__":
     main()
