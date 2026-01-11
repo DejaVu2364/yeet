@@ -7,17 +7,26 @@ import json
 import os
 from pathlib import Path
 from flask import Flask, request, jsonify, render_template
-from bulb_controller import BulbController
 
 # --- Configuration ---
 CONFIG_PATH = Path("config.json")
-with open(CONFIG_PATH, "r") as f:
-    config = json.load(f)
+try:
+    with open(CONFIG_PATH, "r") as f:
+        config = json.load(f)
+except FileNotFoundError:
+    config = {}
 
 # Use PORT from environment (Railway sets this) or fallback to config
 PORT = int(os.environ.get("PORT", config.get("server_port", 5555)))
 app = Flask(__name__, template_folder='templates', static_folder='static')
-bulb = BulbController()
+
+# Bulb controller is optional (for local use only)
+try:
+    from bulb_controller import BulbController
+    bulb = BulbController()
+except Exception as e:
+    print(f"⚠️ Bulb controller not available: {e}")
+    bulb = None
 
 # --- Routes ---
 
@@ -32,7 +41,8 @@ def set_color():
     data = request.json
     try:
         r, g, b = data['r'], data['g'], data['b']
-        bulb.set_color(r, g, b)
+        if bulb:
+            bulb.set_color(r, g, b)
         return jsonify({"status": "success", "color": f"rgb({r},{g},{b})"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
