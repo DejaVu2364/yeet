@@ -1,0 +1,913 @@
+:root {
+    --bg: #0a0a0a;
+    --text: #ffffff;
+    --accent: #ffffff;
+    --orb-color: #333333;
+    --glow-color: transparent;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    transition: background-color 0.5s ease;
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* The Orb */
+.orb-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+}
+
+.orb {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #444, #000);
+    box-shadow:
+        inset 0 0 50px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* The Glow Effect */
+    box-shadow:
+        0 0 60px var(--glow-color),
+        0 0 120px var(--glow-color),
+        0 0 200px var(--glow-color);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+/* Pulse Animations */
+@keyframes pulse-slow {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+}
+
+@keyframes pulse-fast {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.pulsing-slow {
+    animation: pulse-slow 3s infinite ease-in-out;
+}
+
+.pulsing-fast {
+    animation: pulse-fast 0.5s infinite ease-in-out;
+}
+
+.shaking {
+    animation: shake 0.5s;
+}
+
+/* Dashboard Panel */
+.panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-weight: 800;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+input[type="text"],
+input[type="number"] {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #fff;
+}
+
+.main-score input {
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.status-msg {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    height: 1.2em;
+}
+
+/* Error message styling */
+.error-msg {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    min-height: 1em;
+}
+
+/* Primary button (Share) */
+.primary-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.2s;
+}
+
+.primary-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Focus outline for accessibility */
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid #00ffff;
+    outline-offset: 2px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Glitch Overlay */
+.glitch-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.2);
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: overlay;
+}
+
+.glitch-active {
+    animation: glitch-flash 0.2s infinite;
+}
+
+@keyframes glitch-flash {
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: translateX(5px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-5px);
+    }
+}
+
+/* Screen reader only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Select styling */
+select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+select:focus {
+    outline: 2px solid #00ffff;
+    outline-offset: 2px;
+}
+
+/* Responsive layout */
+@media (max-width: 600px) {
+    .container {
+        max-width: 100%;
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    .orb-container {
+        width: 180px;
+        height: 180px;
+    }
+
+    .panel {
+        padding: 1.5rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .controls button {
+        width: 100%;
+    }
+
+    .main-score input {
+        font-size: 2rem;
+    }
+}
+
+option {
+    color: #000;
+    background: #fff;
+}
+
+/* --- New Features --- */
+
+/* Score Header container */
+.score-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Trend Badge */
+.trend-badge {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.trend-up {
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.trend-down {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+}
+
+/* Mini History Dots */
+.history-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    justify-content: center;
+    height: 10px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s;
+}
+
+/* Message Styling */
+.msg-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.msg-body {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* --- Login Modal --- */
+.login-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.98);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.login-box {
+    text-align: center;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 350px;
+    width: 90%;
+}
+
+.login-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: transparent;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+/* --- Welcome Banner --- */
+.welcome-banner {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(0, 255, 255, 0.1));
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+#welcome-text {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: left;
+}
+
+#welcome-text strong {
+    color: #fff;
+    font-weight: 800;
+}
+
+/* Ensure body can scroll */
+body {
+    padding: 2rem 1rem;
+}
+
+/* Exam Display */
+.exam-display {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 1rem 0;
+    text-align: center;
+}
+
+/* --- Onboarding Modal --- */
+.onboarding-box {
+    max-width: 400px;
+}
+
+.onboarding-step {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.onboarding-step label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.onboarding-step select,
+.onboarding-step input {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 1rem;
+}
+
+/* --- Leaderboard Panel --- */
+.leaderboard-panel {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 0, 0, 0.1));
+}
+
+.leaderboard-header h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+#leaderboard-arrow {
+    transition: transform 0.3s;
+}
+
+.leaderboard-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.leaderboard-content.open {
+    max-height: 400px;
+}
+
+#leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#leaderboard-table th,
+#leaderboard-table td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#leaderboard-table th {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#leaderboard-table td {
+    font-size: 0.85rem;
+}
+
+#leaderboard-table tr:nth-child(1) td {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+#leaderboard-table tr:nth-child(2) td {
+    color: #c0c0c0;
+}
+
+#leaderboard-table tr:nth-child(3) td {
+    color: #cd7f32;
+}
+
+/* --- Mode Tabs --- */
+.mode-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+}
+
+.tab-btn {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.tab-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Study Panel --- */
+.study-panel h1 {
+    margin-bottom: 0.5rem;
+}
+
+.streak-badge-minimal {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.5rem;
+}
+
+.timer-comment,
+.pomodoro-comment {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Timer Section */
+.timer-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.timer-display {
+    font-size: 4rem;
+    font-weight: 800;
+    font-family: 'Inter', monospace;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.timer-status {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 1rem;
+}
+
+/* Pomodoro Dots */
+.pomodoro-section {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.pomodoro-section label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pomodoro-dots {
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* 7-Day Dot Graph */
+.dot-graph-section {
+    text-align: center;
+}
+
+.dot-graph-section label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dot-graph {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.dot-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.dot-row .day-label {
+    width: 30px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: right;
+}
+
+.dot-row .dots {
+    display: flex;
+    gap: 4px;
+}
+
+.dot-row .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dot-row .dot.filled {
+    background: #4ade80;
+}
+
+.dot-row .dot.filled.high {
+    background: #8b5cf6;
+}
+
+/* Focus Mode - Orb Glow */
+.orb.focusing {
+    box-shadow: 0 0 60px rgba(255, 165, 0, 0.6);
+}
+
+.glow.focus-pulse {
+    animation: focusPulse 4s ease-in-out infinite;
+}
+
+@keyframes focusPulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* --- Unified Button Theme --- */
+.primary-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.primary-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* --- Ghost Buttons (New Design) --- */
+.ghost-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    text-transform: lowercase;
+}
+
+.ghost-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+/* --- Minimal Timer (Focus Tab) --- */
+.timer-section-minimal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    text-align: center;
+}
+
+.timer-display-big {
+    font-size: 5rem;
+    font-weight: 800;
+    font-family: 'Inter', monospace;
+    color: #fff;
+    margin-bottom: 0.3rem;
+}
+
+.timer-comment {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.5rem;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Focus Stats (subtle row) */
+.focus-stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.focus-stats .dot {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Stats Panel (2x2 Grid) --- */
+.stats-panel h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.2rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-card .stat-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    display: block;
+}
+
+.stat-card label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: lowercase;
+}
+
+/* Study History */
+.study-history {
+    margin-top: 1.5rem;
+}
+
+.study-history>label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+
+.stat-item label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+}

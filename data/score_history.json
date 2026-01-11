@@ -1,0 +1,21 @@
+[
+  {
+    "timestamp": "2026-01-11T07:23:20.404Z",
+    "exam": "USMLE",
+    "score": 350,
+    "total": 800,
+    "percentage": 43.75
+  },
+  {
+    "score": 100,
+    "total": 1000,
+    "percentage": 10,
+    "exam": "USMLE"
+  },
+  {
+    "score": 200,
+    "total": 1000,
+    "percentage": 20,
+    "exam": "USMLE"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "bulb": {
+    "device_id": "YOUR_DEVICE_ID",
+    "local_key": "YOUR_LOCAL_KEY",
+    "ip": "192.168.1.XXX"
+  },
+  "streak_colors": {
+    "0": {"r": 255, "g": 0, "b": 0},
+    "1": {"r": 255, "g": 255, "b": 0},
+    "5": {"r": 0, "g": 255, "b": 0},
+    "16": {"r": 0, "g": 255, "b": 255},
+    "22": {"r": 138, "g": 43, "b": 226}
+  },
+  "success_threshold_minutes": 120,
+  "study_apps": [
+    "com.marrow.app",
+    "com.prepladder",
+    "com.ichi2.anki"
+  ],
+  "server_port": 5555,
+  "streak_reset_hour": 4
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeet 💀</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Login Modal -->
+    <div id="login-modal" class="login-modal">
+        <div class="login-box">
+            <h2>Who dis? 👀</h2>
+            <input type="text" id="usernameInput" placeholder="Enter your name" maxlength="20">
+            <button id="loginBtn" class="primary-btn">Let's Goooo 🚀</button>
+            <p id="login-error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="login-modal" style="display:none;">
+        <div class="login-box onboarding-box">
+            <h2>Let's set you up! 📚</h2>
+
+            <div class="onboarding-step" id="step1">
+                <label>What exam are you grinding for?</label>
+                <select id="onboardExam">
+                    <option value="NEET_PG">NEET PG</option>
+                    <option value="USMLE">USMLE</option>
+                    <option value="PLAB">PLAB</option>
+                    <option value="FMGE">FMGE</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+
+            <div class="onboarding-step" id="step2">
+                <label>Total marks in this exam?</label>
+                <input type="number" id="onboardTotal" placeholder="800" value="800">
+            </div>
+
+            <div class="onboarding-step" id="step3">
+                <label>Your dream score? 🎯</label>
+                <input type="number" id="onboardGoal" placeholder="600">
+            </div>
+
+            <div class="onboarding-step" id="step4">
+                <label>When's the exam? 📅</label>
+                <input type="date" id="onboardDate">
+            </div>
+
+            <button id="onboardBtn" class="primary-btn">Start Grinding 🔥</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Welcome Banner -->
+        <div id="welcome-banner" class="welcome-banner" style="display:none;">
+            <div id="welcome-text"></div>
+            <button id="logoutBtn" class="secondary-btn">Not you?</button>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboard-panel" class="leaderboard-panel" style="display:none;">
+            <div class="leaderboard-header" id="leaderboard-toggle">
+                <h3>🔥 Top 10 Grinders</h3>
+                <span id="leaderboard-arrow">▼</span>
+            </div>
+            <div id="leaderboard-content" class="leaderboard-content">
+                <table id="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Avg %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- The Glowing Orb -->
+        <div class="orb-container">
+            <div id="orb" class="orb"></div>
+            <div id="glow" class="glow"></div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+            <button id="tab-score" class="tab-btn active">📊 Score</button>
+            <button id="tab-study" class="tab-btn">🍅 Focus</button>
+            <button id="tab-dashboard" class="tab-btn">📈 Stats</button>
+        </div>
+
+        <!-- Score Panel -->
+        <div class="panel" id="score-panel">
+            <h1>Yeet 💀</h1>
+            <p id="exam-display" class="exam-display"></p>
+
+            <input type="hidden" id="examSelect" value="">
+            <input type="hidden" id="totalMarks" value="800">
+
+            <div class="input-group main-score">
+                <div class="score-header">
+                    <label>YOUR SCORE</label>
+                    <span id="trendBadge" class="trend-badge" style="display:none;"></span>
+                </div>
+                <input type="number" id="myScore" placeholder="0" autofocus>
+                <div id="historyContainer" class="history-dots"></div>
+            </div>
+
+            <div class="controls">
+                <div class="toggle">
+                    <input type="checkbox" id="syncToggle">
+                    <label for="syncToggle">Sync Bulb</label>
+                </div>
+                <button id="enterBtn" class="primary-btn">Enter</button>
+            </div>
+
+            <div id="error-msg" class="error-msg" aria-live="polite"></div>
+            <div id="message-container" class="status-msg">
+                <div id="message-title" class="msg-title"></div>
+                <div id="message-body" class="msg-body">Enter your score...</div>
+            </div>
+            <div id="tier-announcer" class="sr-only" aria-live="polite"></div>
+        </div>
+
+        <!-- Focus Panel (Minimal + Stats) -->
+        <div class="panel focus-panel" id="study-panel" style="display:none;">
+            <div class="timer-section-minimal">
+                <div id="timer-display" class="timer-display-big">25:00</div>
+                <div id="timer-comment" class="timer-comment">ready to lock in? 🔒</div>
+                <div class="timer-controls">
+                    <button id="startFocusBtn" class="ghost-btn">start focus</button>
+                    <button id="pauseBtn" class="ghost-btn" style="display:none;">pause</button>
+                    <button id="stopBtn" class="ghost-btn" style="display:none;">stop</button>
+                </div>
+            </div>
+            <!-- Focus Stats (subtle) -->
+            <div class="focus-stats">
+                <span id="focus-pomos">0 pomos</span>
+                <span class="dot">•</span>
+                <span id="focus-mins">0 min today</span>
+            </div>
+        </div>
+
+        <!-- Stats Panel (2x2 Grid) -->
+        <div class="panel stats-panel" id="dashboard-panel" style="display:none;">
+            <h2>ur glow up 🌱</h2>
+
+            <!-- 2x2 Stat Grid -->
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span id="stat-scores" class="stat-num">0</span>
+                    <label>your scores</label>
+                </div>
+                <div class="stat-card">
+                    <span id="stat-avg" class="stat-num">0%</span>
+                    <label>avg</label>
+                </div>
+                <div class="stat-card">
+                    <span id="stat-pomos" class="stat-num">0</span>
+                    <label>pomos done</label>
+                </div>
+                <div class="stat-card">
+                    <span id="stat-streak" class="stat-num">0</span>
+                    <label>day streak</label>
+                </div>
+            </div>
+
+            <!-- 7-Day Study Graph -->
+            <div class="study-history">
+                <label>last 7 days</label>
+                <div id="study-graph" class="dot-graph"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Effects Layer -->
+    <div id="particles"></div>
+    <div id="overlay" class="glitch-overlay"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-..."
+        crossorigin="anonymous"></script>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

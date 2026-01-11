@@ -1,0 +1,192 @@
+{
+  "testuser": {
+    "created_at": "2026-01-11T07:31:04.048082+00:00",
+    "last_login": "2026-01-11T07:41:10.778765+00:00",
+    "scores": []
+  },
+  "newgrinder": {
+    "created_at": "2026-01-11T07:42:59.494064+00:00",
+    "last_login": "2026-01-11T07:48:58.234504+00:00",
+    "scores": [],
+    "exam": "NEET_PG",
+    "total_marks": 800,
+    "goal": 700,
+    "exam_date": "2025-12-31",
+    "onboarded": true,
+    "display_name": "Grinder_6160"
+  },
+  "bling_bling": {
+    "created_at": "2026-01-11T07:45:11.869788+00:00",
+    "last_login": "2026-01-11T07:45:11.869788+00:00",
+    "scores": [],
+    "exam": "NEET_PG",
+    "total_marks": 800,
+    "goal": 500,
+    "exam_date": "2026-07-01",
+    "onboarded": true,
+    "display_name": "Grinder_9882"
+  },
+  "yeetuser": {
+    "created_at": "2026-01-11T07:49:33.539024+00:00",
+    "last_login": "2026-01-11T08:46:37.859217+00:00",
+    "scores": [
+      {
+        "timestamp": "2026-01-11T07:52:50.810Z",
+        "exam": "",
+        "score": 200,
+        "total": 800,
+        "percentage": 25
+      },
+      {
+        "timestamp": "2026-01-11T07:52:57.046Z",
+        "exam": "",
+        "score": 350,
+        "total": 800,
+        "percentage": 43.75
+      },
+      {
+        "timestamp": "2026-01-11T07:53:08.765Z",
+        "exam": "",
+        "score": 800,
+        "total": 800,
+        "percentage": 100
+      },
+      {
+        "timestamp": "2026-01-11T07:53:22.025Z",
+        "exam": "",
+        "score": 250,
+        "total": 800,
+        "percentage": 31.25
+      },
+      {
+        "timestamp": "2026-01-11T08:20:04.135Z",
+        "exam": "",
+        "score": 30,
+        "total": 100,
+        "percentage": 30
+      },
+      {
+        "timestamp": "2026-01-11T08:20:05.635Z",
+        "exam": "",
+        "score": 50,
+        "total": 100,
+        "percentage": 50
+      },
+      {
+        "timestamp": "2026-01-11T08:20:07.142Z",
+        "exam": "",
+        "score": 65,
+        "total": 100,
+        "percentage": 65
+      },
+      {
+        "timestamp": "2026-01-11T08:20:08.643Z",
+        "exam": "",
+        "score": 80,
+        "total": 100,
+        "percentage": 80
+      },
+      {
+        "timestamp": "2026-01-11T08:20:10.141Z",
+        "exam": "",
+        "score": 95,
+        "total": 100,
+        "percentage": 95
+      },
+      {
+        "timestamp": "2026-01-11T08:20:17.111Z",
+        "exam": "",
+        "score": 30,
+        "total": 100,
+        "percentage": 30
+      },
+      {
+        "timestamp": "2026-01-11T08:20:18.610Z",
+        "exam": "",
+        "score": 50,
+        "total": 100,
+        "percentage": 50
+      },
+      {
+        "timestamp": "2026-01-11T08:20:20.122Z",
+        "exam": "",
+        "score": 65,
+        "total": 100,
+        "percentage": 65
+      },
+      {
+        "timestamp": "2026-01-11T08:20:21.624Z",
+        "exam": "",
+        "score": 80,
+        "total": 100,
+        "percentage": 80
+      },
+      {
+        "timestamp": "2026-01-11T08:20:23.115Z",
+        "exam": "",
+        "score": 95,
+        "total": 100,
+        "percentage": 95
+      }
+    ],
+    "exam": "",
+    "total_marks": 800,
+    "goal": 600,
+    "exam_date": "2025-12-31",
+    "onboarded": true,
+    "display_name": "Grinder_1056",
+    "current_session": {
+      "start_time": "2026-01-11T09:07:48.826498+00:00"
+    },
+    "study_sessions": [
+      {
+        "date": "2026-01-11",
+        "duration_mins": 0,
+        "pomodoros": 0
+      }
+    ]
+  },
+  "studytest": {
+    "created_at": "2026-01-11T08:02:38.257426+00:00",
+    "last_login": "2026-01-11T08:19:41.315085+00:00",
+    "scores": [
+      {
+        "timestamp": "2026-01-11T08:04:20.559Z",
+        "exam": "",
+        "score": 250,
+        "total": 800,
+        "percentage": 31.25
+      },
+      {
+        "timestamp": "2026-01-11T08:05:55.657Z",
+        "exam": "",
+        "score": 250,
+        "total": 800,
+        "percentage": 31.25
+      },
+      {
+        "timestamp": "2026-01-11T08:06:04.851Z",
+        "exam": "",
+        "score": 250,
+        "total": 800,
+        "percentage": 31.25
+      },
+      {
+        "timestamp": "2026-01-11T08:06:23.960Z",
+        "exam": "",
+        "score": 250,
+        "total": 800,
+        "percentage": 31.25
+      }
+    ],
+    "exam": "",
+    "total_marks": 800,
+    "goal": 700,
+    "exam_date": "2026-12-31",
+    "onboarded": true,
+    "display_name": "Grinder_7790",
+    "current_session": {
+      "start_time": "2026-01-11T08:18:21.028816+00:00"
+    }
+  }
+}
