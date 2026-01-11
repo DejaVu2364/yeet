@@ -64,26 +64,6 @@
             <button id="logoutBtn" class="secondary-btn">Not you?</button>
         </div>
 
-        <!-- Leaderboard -->
-        <div id="leaderboard-panel" class="leaderboard-panel" style="display:none;">
-            <div class="leaderboard-header" id="leaderboard-toggle">
-                <h3>🔥 Top 10 Grinders</h3>
-                <span id="leaderboard-arrow">▼</span>
-            </div>
-            <div id="leaderboard-content" class="leaderboard-content">
-                <table id="leaderboard-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Avg %</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-body"></tbody>
-                </table>
-            </div>
-        </div>
-
         <!-- The Glowing Orb -->
         <div class="orb-container">
             <div id="orb" class="orb"></div>
@@ -140,6 +120,8 @@
                     <button id="pauseBtn" class="ghost-btn" style="display:none;">pause</button>
                     <button id="stopBtn" class="ghost-btn" style="display:none;">stop</button>
                 </div>
+                <!-- Pomodoro Dots (one per completed 25min) -->
+                <div id="pomo-dots" class="pomo-dots"></div>
             </div>
             <!-- Focus Stats (subtle) -->
             <div class="focus-stats">
@@ -152,6 +134,21 @@
         <!-- Stats Panel (2x2 Grid) -->
         <div class="panel stats-panel" id="dashboard-panel" style="display:none;">
             <h2>ur glow up 🌱</h2>
+
+            <!-- Weekly Comparison -->
+            <div id="weekly-comparison" class="weekly-comparison">
+                <!-- Filled dynamically -->
+            </div>
+
+            <!-- Score Trend Chart -->
+            <div class="trend-container">
+                <svg id="trend-chart" class="trend-chart" viewBox="0 0 280 80">
+                    <!-- Filled dynamically -->
+                </svg>
+                <div id="trend-empty" class="trend-empty" style="display:none;">
+                    no data yet... go take a test 🙃
+                </div>
+            </div>
 
             <!-- 2x2 Stat Grid -->
             <div class="stat-grid">
@@ -177,6 +174,19 @@
             <div class="study-history">
                 <label>last 7 days</label>
                 <div id="study-graph" class="dot-graph"></div>
+            </div>
+
+            <!-- Support Section -->
+            <div class="support-section">
+                <p class="support-msg">
+                    i'm a student too, grinding through my internship while building this.<br>
+                    this is for all of us — the ones studying at 2am, the ones who refuse to give up.<br>
+                    keep going. you've got this. 💙
+                </p>
+                <p class="support-cta">if you have the means, consider supporting →</p>
+                <a href="https://www.chai4.me/keepyeeting" target="_blank" class="coffee-btn">
+                    ☕ buy me a coffee
+                </a>
             </div>
         </div>
     </div>

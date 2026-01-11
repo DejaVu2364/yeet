@@ -86,8 +86,12 @@ const TIMER_COMMENTS = {
     FOCUS: "you're cooking rn 🔥",
     BREAK: "touch grass (briefly) 🌿",
     PAUSED: "phone check? be so fr 😐",
+    RESUME: "let's get back to it 💪",
     DONE: "pomodoro secured 💅"
 };
+
+// Pomo Dots Element
+const pomoDots = document.getElementById('pomo-dots');
 
 const STREAK_COMMENTS = {
     0: "no streak yet... start one? 👀",
@@ -169,7 +173,7 @@ async function handleLogin() {
 
 function showMainApp(data) {
     welcomeBanner.style.display = 'flex';
-    leaderboardPanel.style.display = 'block';
+    if (leaderboardPanel) leaderboardPanel.style.display = 'block';
 
     // Show welcome message
     const msg = getWelcomeMessage(data.daysSince);
@@ -241,6 +245,7 @@ async function fetchLeaderboard() {
 }
 
 function renderLeaderboard(leaderboard) {
+    if (!leaderboardBody) return; // Leaderboard removed from UI
     leaderboardBody.innerHTML = '';
     leaderboard.forEach((entry, index) => {
         const row = document.createElement('tr');
@@ -259,7 +264,7 @@ function handleLogout() {
     currentUserData = null;
     loginModal.style.display = 'flex';
     welcomeBanner.style.display = 'none';
-    leaderboardPanel.style.display = 'none';
+    if (leaderboardPanel) leaderboardPanel.style.display = 'none';
     usernameInput.value = '';
 }
 
@@ -280,11 +285,13 @@ usernameInput.addEventListener('keypress', (e) => {
 logoutBtn.addEventListener('click', handleLogout);
 onboardBtn.addEventListener('click', handleOnboarding);
 
-// Leaderboard toggle
-leaderboardToggle.addEventListener('click', () => {
-    leaderboardContent.classList.toggle('open');
-    leaderboardArrow.style.transform = leaderboardContent.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0)';
-});
+// Leaderboard toggle (only if element exists)
+if (leaderboardToggle) {
+    leaderboardToggle.addEventListener('click', () => {
+        if (leaderboardContent) leaderboardContent.classList.toggle('open');
+        if (leaderboardArrow) leaderboardArrow.style.transform = leaderboardContent?.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0)';
+    });
+}
 
 // Initialize on load
 checkExistingLogin();
@@ -308,12 +315,89 @@ examSelect.addEventListener('change', () => {
 
 // --- Color Configuration ---
 const COLORS = [
-    { threshold: 0, r: 255, g: 0, b: 0, title: "CRITICAL FAILURE", msg: "Bruh... we need to talk 😬" },
-    { threshold: 40, r: 255, g: 165, b: 0, title: "BELOW AVERAGE", msg: "Oof, you got this next time! 💪" },
-    { threshold: 60, r: 255, g: 255, b: 0, title: "NEEDS IMPROVEMENT", msg: "Not bad, not bad... keep grinding! 📚" },
-    { threshold: 75, r: 0, g: 255, b: 0, title: "GOOD PERFORMANCE", msg: "Ayyy, solid work! 🔥" },
-    { threshold: 90, r: 138, g: 43, b: 226, title: "EXCELLENT!", msg: "YOOOOO LESSSS GOOOOOO!!! 🎉🚀" }
+    { threshold: 0, r: 255, g: 0, b: 0, title: "CRITICAL FAILURE" },
+    { threshold: 40, r: 255, g: 165, b: 0, title: "BELOW AVERAGE" },
+    { threshold: 60, r: 255, g: 255, b: 0, title: "NEEDS IMPROVEMENT" },
+    { threshold: 75, r: 0, g: 255, b: 0, title: "GOOD PERFORMANCE" },
+    { threshold: 90, r: 138, g: 43, b: 226, title: "EXCELLENT!" }
 ];
+
+// --- Rotating Score Comments (10 per tier) ---
+const SCORE_COMMENTS = {
+    critical: [
+        "bruh... we need to talk 😬",
+        "that's rough buddy 💀",
+        "pain. just pain. 😭",
+        "we don't talk about this one 🙈",
+        "yikes on bikes 🚲💥",
+        "this score owes you an apology 😤",
+        "call it a learning experience 📚",
+        "main character's origin story 🎬",
+        "comeback szn starts NOW 🔥",
+        "okay but... why 😭"
+    ],
+    below: [
+        "oof, you got this next time 💪",
+        "not your day, but tomorrow hits different ☀️",
+        "average is a stepping stone 🪨",
+        "mid but make it motivational 🚀",
+        "we've all been there fr fr 🤝",
+        "room for improvement = room to grow 🌱",
+        "this is the grind era 💼",
+        "plot twist incoming 📖",
+        "your villain arc ends now 😈",
+        "mediocre today, monstrous tomorrow 💪"
+    ],
+    okay: [
+        "not bad, keep grinding 📚",
+        "solid effort, more gas needed ⛽",
+        "you're warming up 🔥",
+        "decent! now go again 🔄",
+        "consistency > perfection 📈",
+        "building momentum 🏃‍♂️",
+        "one foot in the door 🚪",
+        "progress is progress 💯",
+        "the grind never lies 💪",
+        "getting there fr 🎯"
+    ],
+    good: [
+        "ayyy solid work 🔥",
+        "you're cooking fr 🍳",
+        "that's what we like to see 👀",
+        "big W energy right here 🏆",
+        "your discipline is showing 💪",
+        "elite performance incoming ✨",
+        "taste of greatness 😤",
+        "this is your era 🌟",
+        "slay bestie slay 💅",
+        "you're that person 🎯"
+    ],
+    excellent: [
+        "YOOOOO LESSSS GOOOOOO!!! 🎉🚀",
+        "absolutely UNHINGED performance 🔥",
+        "you're actually insane 💀🏆",
+        "main character behavior 🎬✨",
+        "the chosen one has arrived 👑",
+        "certified genius moment 🧠",
+        "future doctor/engineer/legend 🩺⚡",
+        "ok flex on us why don't you 💪",
+        "this is what peak looks like 📈",
+        "literally cracked at this 🥚💥"
+    ]
+};
+
+function getRandomComment(percentage) {
+    let tier;
+    if (percentage < 40) tier = 'critical';
+    else if (percentage < 60) tier = 'below';
+    else if (percentage < 75) tier = 'okay';
+    else if (percentage < 90) tier = 'good';
+    else tier = 'excellent';
+
+    const comments = SCORE_COMMENTS[tier];
+    return comments[Math.floor(Math.random() * comments.length)];
+}
+
 
 // --- Orb Update ---
 async function updateOrb(score, total) {
@@ -343,7 +427,7 @@ async function updateOrb(score, total) {
 
     // Update Text
     messageTitle.innerText = `${percentage.toFixed(1)}% — ${color.title}`;
-    messageBody.innerText = color.msg;
+    messageBody.innerText = getRandomComment(percentage);
     messageTitle.style.color = rgb;
     messageBody.style.color = "#fff";
 
@@ -432,6 +516,16 @@ async function recordScoreAndContext(score, total, exam, percentage) {
 
         const data = await response.json();
         if (data.status === 'success') {
+            // Update local data so Stats tab syncs immediately
+            if (currentUserData && currentUserData.scores) {
+                currentUserData.scores.push({
+                    timestamp: new Date().toISOString(),
+                    exam: exam,
+                    score: score,
+                    total: total,
+                    percentage: percentage
+                });
+            }
             updateTrendAndHistory(data.previous, data.history, percentage);
         }
     } catch (e) {
@@ -571,9 +665,9 @@ if (demoBtn) {
 }
 
 // --- Tab Switching ---
-const orbContainer = document.querySelector('.orb-container');
-
 function switchTab(activeTab) {
+    const orb = document.querySelector('.orb-container');
+
     // Reset all tabs
     [tabScore, tabStudy, tabDashboard].forEach(t => t && t.classList.remove('active'));
     [scorePanel, studyPanel, dashboardPanel].forEach(p => p && (p.style.display = 'none'));
@@ -582,15 +676,16 @@ function switchTab(activeTab) {
     if (activeTab === 'score') {
         tabScore && tabScore.classList.add('active');
         scorePanel && (scorePanel.style.display = 'block');
-        if (orbContainer) orbContainer.style.display = 'flex';
+        if (orb) orb.style.display = 'flex';
     } else if (activeTab === 'study') {
         tabStudy && tabStudy.classList.add('active');
         studyPanel && (studyPanel.style.display = 'block');
-        if (orbContainer) orbContainer.style.display = 'none';
+        if (orb) orb.style.display = 'none';
+        updatePomodoroDots(); // Render dots when switching to focus
     } else if (activeTab === 'dashboard') {
         tabDashboard && tabDashboard.classList.add('active');
         dashboardPanel && (dashboardPanel.style.display = 'block');
-        if (orbContainer) orbContainer.style.display = 'none';
+        if (orb) orb.style.display = 'none';
         loadDashboard();
     }
 }
@@ -659,11 +754,108 @@ async function loadDashboard() {
                 const avg = scores.reduce((sum, s) => sum + (s.percentage || 0), 0) / scores.length;
                 statAvg.textContent = `${Math.round(avg)}%`;
             }
+
+            // Weekly Comparison
+            renderWeeklyComparison(scores);
+
+            // Score Trend Chart
+            renderTrendChart(scores);
+        } else {
+            // Empty state
+            const trendEmpty = document.getElementById('trend-empty');
+            const trendChart = document.getElementById('trend-chart');
+            if (trendEmpty) trendEmpty.style.display = 'block';
+            if (trendChart) trendChart.style.display = 'none';
         }
 
     } catch (e) {
         console.error('Failed to load dashboard', e);
     }
+}
+
+// --- Weekly Comparison ---
+function renderWeeklyComparison(scores) {
+    const container = document.getElementById('weekly-comparison');
+    if (!container || scores.length < 2) {
+        if (container) container.textContent = '';
+        return;
+    }
+
+    const now = Date.now();
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+
+    // Get scores from this week and last week
+    const thisWeek = scores.filter(s => {
+        const ts = new Date(s.timestamp || s.date).getTime();
+        return now - ts < oneWeek;
+    });
+    const lastWeek = scores.filter(s => {
+        const ts = new Date(s.timestamp || s.date).getTime();
+        return now - ts >= oneWeek && now - ts < 2 * oneWeek;
+    });
+
+    if (thisWeek.length === 0 || lastWeek.length === 0) {
+        container.textContent = '';
+        return;
+    }
+
+    const thisAvg = thisWeek.reduce((sum, s) => sum + (s.percentage || 0), 0) / thisWeek.length;
+    const lastAvg = lastWeek.reduce((sum, s) => sum + (s.percentage || 0), 0) / lastWeek.length;
+    const diff = Math.round(thisAvg - lastAvg);
+
+    container.className = 'weekly-comparison ' + (diff >= 0 ? 'positive' : 'negative');
+    container.textContent = diff >= 0
+        ? `+${diff}% vs last week 📈`
+        : `${diff}% vs last week 📉`;
+}
+
+// --- Score Trend Chart (SVG) ---
+function renderTrendChart(scores) {
+    const svg = document.getElementById('trend-chart');
+    const emptyDiv = document.getElementById('trend-empty');
+
+    if (!svg) return;
+
+    const recentScores = scores.slice(-10);
+
+    if (recentScores.length < 2) {
+        svg.style.display = 'none';
+        if (emptyDiv) emptyDiv.style.display = 'block';
+        return;
+    }
+
+    svg.style.display = 'block';
+    if (emptyDiv) emptyDiv.style.display = 'none';
+
+    // Calculate points
+    const width = 280;
+    const height = 80;
+    const padding = 15;
+    const chartWidth = width - 2 * padding;
+    const chartHeight = height - 2 * padding;
+
+    const minScore = Math.min(...recentScores.map(s => s.percentage || 0));
+    const maxScore = Math.max(...recentScores.map(s => s.percentage || 0));
+    const range = maxScore - minScore || 1;
+
+    const points = recentScores.map((s, i) => {
+        const x = padding + (i / (recentScores.length - 1)) * chartWidth;
+        const y = height - padding - ((s.percentage || 0) - minScore) / range * chartHeight;
+        return { x, y, pct: s.percentage || 0 };
+    });
+
+    // Determine trend direction
+    const first = recentScores[0]?.percentage || 0;
+    const last = recentScores[recentScores.length - 1]?.percentage || 0;
+    const isPositive = last >= first;
+    const trendClass = isPositive ? 'positive' : 'negative';
+
+    // Build SVG
+    const pathPoints = points.map(p => `${p.x},${p.y}`).join(' ');
+    svg.innerHTML = `
+        <polyline class="trend-line ${trendClass}" points="${pathPoints}" />
+        ${points.map(p => `<circle class="trend-dot ${trendClass}" cx="${p.x}" cy="${p.y}" r="3" />`).join('')}
+    `;
 }
 
 // --- Update Focus Tab Stats ---
@@ -687,11 +879,16 @@ function updateTimerDisplay() {
 }
 
 function startTimer() {
+    // Track if resuming
+    const isResuming = timerState === 'PAUSED';
+
     if (timerState === 'IDLE') {
         timerState = 'FOCUS';
         timeLeft = FOCUS_TIME;
         // Start session on backend
         fetch(`/api/session/start/${currentUsername}`, { method: 'POST' });
+    } else if (timerState === 'PAUSED') {
+        timerState = 'FOCUS';
     }
 
     // Show/hide buttons
@@ -699,8 +896,18 @@ function startTimer() {
     pauseBtn.style.display = 'inline-block';
     stopBtn.style.display = 'inline-block';
 
-    // Update quirky comment
-    if (timerComment) timerComment.textContent = TIMER_COMMENTS[timerState] || TIMER_COMMENTS.FOCUS;
+    // Update quirky comment (show RESUME if resuming, else FOCUS)
+    if (timerComment) {
+        timerComment.textContent = isResuming ? TIMER_COMMENTS.RESUME : TIMER_COMMENTS.FOCUS;
+        // After 2s, change to cooking message
+        if (isResuming) {
+            setTimeout(() => {
+                if (timerState === 'FOCUS' && timerComment) {
+                    timerComment.textContent = TIMER_COMMENTS.FOCUS;
+                }
+            }, 2000);
+        }
+    }
 
     timerInterval = setInterval(() => {
         timeLeft--;
@@ -774,18 +981,24 @@ function stopTimer() {
 }
 
 function updatePomodoroDots() {
-    if (!pomodoroDots) return;
-    let dots = '';
-    const completed = pomodorosToday % 4;
-    for (let i = 0; i < 4; i++) {
-        dots += (i < completed || (pomodorosToday > 0 && completed === 0)) ? '● ' : '○ ';
+    // Render pomo dots (small orbs)
+    if (pomoDots) {
+        pomoDots.innerHTML = '';
+        for (let i = 0; i < pomodorosToday; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'pomo-dot filled';
+            pomoDots.appendChild(dot);
+        }
+        // Add empty placeholder if 0
+        if (pomodorosToday === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'pomo-dot';
+            pomoDots.appendChild(empty);
+        }
     }
-    pomodoroDots.textContent = dots.trim();
 
-    // Update pomodoro comment
-    if (pomodoroComment) {
-        pomodoroComment.textContent = POMO_COMMENTS[Math.min(pomodorosToday, 4)] || '';
-    }
+    // Update focus stats text
+    updateFocusStats();
 }
 
 // Study Space event listeners

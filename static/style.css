@@ -842,6 +842,26 @@ body {
     gap: 0.5rem;
 }
 
+/* Pomodoro Dots (small orbs for each completed pomo) */
+.pomo-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.pomo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.pomo-dot.filled {
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
 /* Focus Stats (subtle row) */
 .focus-stats {
     display: flex;
@@ -894,6 +914,70 @@ body {
     text-transform: lowercase;
 }
 
+/* Weekly Comparison Indicator */
+.weekly-comparison {
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+    min-height: 1.2em;
+}
+
+.weekly-comparison.positive {
+    color: #4ade80;
+}
+
+.weekly-comparison.negative {
+    color: #f87171;
+}
+
+/* Score Trend Chart */
+.trend-container {
+    margin-bottom: 1.5rem;
+    position: relative;
+    min-height: 80px;
+}
+
+.trend-chart {
+    width: 100%;
+    height: 80px;
+}
+
+.trend-chart .trend-line {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.trend-chart .trend-line.positive {
+    stroke: #4ade80;
+}
+
+.trend-chart .trend-line.negative {
+    stroke: #f87171;
+}
+
+.trend-chart .trend-dot {
+    fill: rgba(255, 255, 255, 0.6);
+}
+
+.trend-chart .trend-dot.positive {
+    fill: #4ade80;
+}
+
+.trend-chart .trend-dot.negative {
+    fill: #f87171;
+}
+
+.trend-empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    padding: 1.5rem 0;
+}
+
 /* Study History */
 .study-history {
     margin-top: 1.5rem;
@@ -910,4 +994,43 @@ body {
 .stat-item label {
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.4);
+}
+
+/* Support / Buy Me a Coffee */
+.support-section {
+    margin-top: 2rem;
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.support-msg {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.support-cta {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 0.75rem;
+}
+
+.coffee-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.coffee-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
 }
