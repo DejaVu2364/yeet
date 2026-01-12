@@ -65,6 +65,7 @@ const studyGraph = document.getElementById('study-graph');
 // Focus Tab Stats
 const focusPomos = document.getElementById('focus-pomos');
 const focusMins = document.getElementById('focus-mins');
+const dotGraph = document.getElementById('dot-graph'); // 7-day dots in Focus tab
 
 let isDemoRunning = false;
 let currentColor = null;
@@ -79,6 +80,58 @@ let pomodorosToday = 0;
 const FOCUS_TIME = 25 * 60;
 const BREAK_TIME = 5 * 60;
 const LONG_BREAK_TIME = 15 * 60;
+
+// --- Audio Notifications (Web Audio API) ---
+let audioContext = null;
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
+
+function playTone(frequency, duration, type = 'sine', volume = 0.3) {
+    try {
+        const ctx = initAudio();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+
+        gainNode.gain.setValueAtTime(volume, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + duration);
+    } catch (e) {
+        console.log('Audio not available');
+    }
+}
+
+// Minimal, pleasing notification sounds
+function playStartSound() {
+    playTone(880, 0.15); // A5 - short, energizing
+    setTimeout(() => playTone(1108, 0.2), 100); // C#6 - ascending
+}
+
+function playCompleteSound() {
+    playTone(523, 0.15); // C5
+    setTimeout(() => playTone(659, 0.15), 100); // E5
+    setTimeout(() => playTone(784, 0.25), 200); // G5 - success chord
+}
+
+function playBreakSound() {
+    playTone(440, 0.3, 'sine', 0.2); // A4 - soft, calming
+}
+
+function playResumeSound() {
+    playTone(660, 0.2); // E5 - single alert
+}
 
 // Gen Z Quirky Comments
 const TIMER_COMMENTS = {
@@ -881,14 +934,19 @@ function updateTimerDisplay() {
 function startTimer() {
     // Track if resuming
     const isResuming = timerState === 'PAUSED';
+    const isBreakTransition = timerState === 'BREAK';
 
     if (timerState === 'IDLE') {
         timerState = 'FOCUS';
         timeLeft = FOCUS_TIME;
+        playStartSound(); // 🔊 Sound on start
         // Start session on backend
         fetch(`/api/session/start/${currentUsername}`, { method: 'POST' });
     } else if (timerState === 'PAUSED') {
         timerState = 'FOCUS';
+        playResumeSound(); // 🔊 Sound on resume
+    } else if (timerState === 'BREAK') {
+        // Just continue with break timer (no sound, already played)
     }
 
     // Show/hide buttons
@@ -897,7 +955,7 @@ function startTimer() {
     stopBtn.style.display = 'inline-block';
 
     // Update quirky comment (show RESUME if resuming, else FOCUS)
-    if (timerComment) {
+    if (timerComment && !isBreakTransition) {
         timerComment.textContent = isResuming ? TIMER_COMMENTS.RESUME : TIMER_COMMENTS.FOCUS;
         // After 2s, change to cooking message
         if (isResuming) {
@@ -920,22 +978,29 @@ function startTimer() {
                 // Completed a pomodoro
                 pomodorosToday++;
                 updatePomodoroDots();
+                playCompleteSound(); // 🔊 Success sound!
+
+                // Immediately sync stats so Stats tab updates
+                loadDashboard();
+                loadStudyHistory();
 
                 // Switch to break
                 timerState = 'BREAK';
                 timeLeft = (pomodorosToday % 4 === 0) ? LONG_BREAK_TIME : BREAK_TIME;
                 if (timerComment) timerComment.textContent = TIMER_COMMENTS.DONE;
 
-                // Auto-start break
+                // Auto-start break after brief pause
                 setTimeout(() => {
+                    playBreakSound(); // 🔊 Break starting
                     if (timerComment) timerComment.textContent = TIMER_COMMENTS.BREAK;
                     startTimer();
                 }, 2000);
             } else {
                 // Break done, ready for next focus
+                playResumeSound(); // 🔊 Alert: break over
                 timerState = 'IDLE';
                 timeLeft = FOCUS_TIME;
-                if (timerComment) timerComment.textContent = TIMER_COMMENTS.IDLE;
+                if (timerComment) timerComment.textContent = "break's over, lock in! 🔒";
                 startFocusBtn.style.display = 'inline-block';
                 startFocusBtn.textContent = 'Start Focus 🎯';
                 pauseBtn.style.display = 'none';
