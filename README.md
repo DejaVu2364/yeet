@@ -16,7 +16,7 @@ Built by a med student, for students grinding exams at 2am.
 ## 🚀 Quick Start
 
 ### Live Demo
-Try it at: [yeet.study](https://yeet.study) *(or Railway URL)*
+Try it at: [yeet.study](https://yeet.study)
 
 ### Run Locally
 
