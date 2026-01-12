@@ -1,141 +1,90 @@
-# 🎓 Study Streak Bulb
+# Yeet 💀
 
-**Your room roasts you when you don't study.**
+**A study tracker for students who need a little roasting to stay motivated.**
 
-A smart bulb that changes color based on your study streak — powered by habit formation psychology.
+Built by a med student, for students grinding exams at 2am.
 
-## 🌈 Color Progression
+## ✨ Features
 
-| Streak | Color | Meaning |
-|--------|-------|---------|
-| 0 days | 🔴 Red | Streak broken |
-| 1-4 days | 🟡 Yellow | Building |
-| 5-15 days | 🟢 Green | Momentum |
-| 16-21 days | 🩵 Cyan | Almost there |
-| **22+ days** | 🟣 **Purple** | **HABIT FORMED!** |
+- 📊 **Score Tracking** — Track exam scores with trend visualization
+- 🔥 **50+ Rotating Comments** — Get roasted or celebrated based on your score
+- 🍅 **Pomodoro Timer** — 25-minute focus sessions
+- 📈 **Weekly Comparison** — See +/-% vs last week
+- 🏆 **Day Streak** — Build habits with 22-day milestone
+- 💡 **Smart Bulb Integration** — Optional: sync your room light to your score
 
-## 🧠 The Psychology
+## 🚀 Quick Start
 
-- **Environment Design** — Your room becomes a feedback system
-- **Loss Aversion** — Red light triggers shame, motivating consistency  
-- **Identity Reinforcement** — Purple light = "I am someone who studies"
-- **Immediate Feedback** — No waiting for exam results
+### Live Demo
+Try it at: [yeet.study](https://yeet.study) *(or Railway URL)*
 
-## 📦 Setup
-
-### 1. Install Dependencies
+### Run Locally
 
 ```bash
+# Clone
+git clone https://github.com/DejaVu2364/yeet.git
+cd yeet
+
+# Install
 pip install -r requirements.txt
-```
 
-### 2. Get Bulb Credentials (Tuya)
-
-Your Crompton bulb uses Tuya. You need:
-- Device ID
-- Local Key  
-- IP Address
-
-**Quick Setup:**
-1. Create free account at [iot.tuya.com](https://iot.tuya.com)
-2. Add your bulb to Smart Life app
-3. Link Smart Life to Tuya IoT Platform
-4. Run: `python -m tinytuya wizard`
-5. Copy credentials to `config.json`
-
-### 3. Configure
-
-Edit `config.json`:
-
-```json
-{
-  "bulb": {
-    "device_id": "YOUR_DEVICE_ID",
-    "local_key": "YOUR_LOCAL_KEY",
-    "ip": "192.168.1.XXX"
-  }
-}
-```
-
-### 4. Start Server
-
-```bash
+# Run
 python server.py
 ```
 
-Server runs on `http://0.0.0.0:5555`
+Open `http://localhost:5555`
 
-## 📱 Android Setup (MacroDroid)
+## 🎨 Score Feedback Tiers
 
-1. Install **MacroDroid** from Play Store
-2. Create new macro:
-   - **Trigger**: Time = 4:00 AM (or your preferred reset time)
-   - **Action**: HTTP Request
-     - URL: `http://YOUR_PC_IP:5555/log`
-     - Method: POST
-     - Body: `{"date": "{date}", "minutes": {app_usage_minutes}}`
+| Score | Vibe | Example Comment |
+|-------|------|-----------------|
+| 0-39% | 💀 Critical | "bruh... we need to talk 😬" |
+| 40-59% | 😅 Below | "mid but make it motivational 🚀" |
+| 60-74% | 📚 Okay | "not bad, keep grinding 📚" |
+| 75-89% | 🔥 Good | "you're cooking fr 🍳" |
+| 90-100% | 🏆 Excellent | "literally cracked at this 🥚💥" |
 
-MacroDroid can track app usage natively — no root needed.
+## 🌈 Streak Colors
 
-## 🔌 API Endpoints
+| Days | Color | Meaning |
+|------|-------|---------|
+| 0 | 🔴 Red | Streak broken |
+| 1-4 | 🟡 Yellow | Building |
+| 5-15 | 🟢 Green | Momentum |
+| 16-21 | 🩵 Cyan | Almost there |
+| **22+** | 🟣 **Purple** | **Habit formed!** |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/log` | Log daily study minutes |
-| `GET` | `/status` | Get current streak |
-| `POST` | `/sync` | Force sync bulb color |
-| `POST` | `/test` | Test with specific streak |
+## 💡 Smart Bulb Integration (Optional)
 
-### Example: Log Study Time
+Yeet can sync your room light color to your study streak!
 
-```bash
-curl -X POST http://localhost:5555/log \
-  -H "Content-Type: application/json" \
-  -d '{"date": "2026-01-08", "minutes": 145}'
-```
+When enabled:
+- 🔴 Red room = streak broken (shame mode)
+- 🟣 Purple room = 22+ day streak (you're a legend)
 
-### Example: Test Purple (22-day streak)
-
-```bash
-curl -X POST http://localhost:5555/test \
-  -H "Content-Type: application/json" \
-  -d '{"streak": 22}'
-```
+See [SMART_BULB_SETUP.md](SMART_BULB_SETUP.md) for setup instructions.
 
 ## 📁 Project Structure
 
 ```
-study-streak-bulb/
-├── config.json          # Bulb credentials & settings
-├── server.py            # Webhook server
-├── streak_tracker.py    # Streak calculation logic
-├── bulb_controller.py   # TinyTuya bulb control
-├── requirements.txt     # Python dependencies
+yeet/
+├── server.py            # Flask backend
+├── static/
+│   ├── script.js        # Frontend logic
+│   └── style.css        # Styling
+├── templates/
+│   └── index.html       # Main UI
 ├── data/
-│   └── study_log.json   # Daily study records
-└── README.md
+│   └── users.json       # User data
+└── requirements.txt
 ```
 
-## 🎯 Success Criteria
+## ☕ Support
 
-**Study ≥ 2 hours/day = streak continues**
+If this helped you study, consider supporting:
 
-The 2-hour threshold is based on deliberate practice research. Adjust in `config.json` if needed:
-
-```json
-"success_threshold_minutes": 120
-```
-
-## 🚀 Quick Test
-
-```bash
-# Test streak = 0 (red)
-curl -X POST localhost:5555/test -d '{"streak": 0}'
-
-# Test streak = 22 (purple celebration!)
-curl -X POST localhost:5555/test -d '{"streak": 22}'
-```
+[chai4.me/keepyeeting](https://www.chai4.me/keepyeeting)
 
 ---
 
-**Built for medical students who need ambient accountability.** 🩺
+**Built with 💙 by a student, for students.**
